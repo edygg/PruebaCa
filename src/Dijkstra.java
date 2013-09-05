@@ -96,7 +96,7 @@ public class Dijkstra {
                             //Si el nuevo camino es menor se sustituye por el anterior
                             valoresCaminos[i] = neoCamino;
                             //Añadiendo el vertice de camino más corto a la pila del vértice en cuestión
-                            //porque significa que tuvimos por ahí para llegar al vértice en cuestión.
+                            //porque significa que tuvimos que pasar por ahí para llegar al vértice en cuestión.
                             caminos[i].queue(verticeCaminoCorto);
                         }
                     }
