@@ -95,4 +95,39 @@ public class SLQueue extends ADTQueue {
     public Object peek() {
         return head.getData();
     }
+    
+    public Object last() {
+        SLNode retval = head;
+        
+        for (int i = 0; i < size - 1; i++) {
+            retval = retval.getNext();
+        }
+        
+        return retval.getData();
+    }
+    
+    public SLQueue duplicate() {
+        SLQueue neo = new SLQueue();
+        SLNode tmp = head;
+        
+        while (tmp != null) {
+            neo.queue(tmp.getData());
+            tmp = tmp.getNext();
+        }
+        
+        return neo;
+    }
+    
+   @Override
+    public String toString() {
+        String retval = "";
+        SLNode tmp = head;
+        
+        while (tmp != null) {
+            retval += tmp.getData().toString() + "  ";
+            tmp = tmp.getNext();
+        }
+        
+        return retval;
+    }
 }

@@ -37,18 +37,17 @@ public class Dijkstra {
          */
         //CON RESPECTO A ESTE ARREGLO CORRESPONDE CADA SUBÍNDICE DEL ARREGLO DE COLAS
         String[] arregloVertices = new String[grafo.getVertexCount()]; 
-        //Imprimiendo el arreglo de vértices para saber cual es el orden de las colas
-        for (int i = 0; i < arregloVertices.length; i++) {
-            System.out.print(arregloVertices[i]+ "   ");
-        }
-        System.out.println();
+        
         //Rellenando el arreglo de vertices con el contenido de la colección extraida del grafo
         vertices.toArray(arregloVertices);
+        //Imprimiendo el arreglo de vértices para saber cual es el orden de las colas
         
         //vertice que posee el camino más corto actualmente
         String verticeCaminoCorto = "";
         //Valor del camino más corto actualmente
         double valorCaminoCorto = Double.POSITIVE_INFINITY; // Esto solo es por inicializarla con un valor cualquiera
+        ADTQueue caminoCompletoCorto = null;
+        vertices.remove(verticeInicial);
         
         /* Creando la situación inicial */
         for (int i = 0; i < arregloVertices.length; i++) {
@@ -61,16 +60,19 @@ public class Dijkstra {
                     //Colocando el valor en el arreglo de los caminos más cortos
                     valoresCaminos[i] = valorCamino;
                     //Añadiendo el vértice inicial al camino del vértice en el arreglo de vértices
+                    caminos[i].queue(verticeInicial);
                     caminos[i].queue(arregloVertices[i]);
                     
                     //Con este if se determina el camino más corto inicial
                     if (i == 0) {
                         verticeCaminoCorto = arregloVertices[i];
                         valorCaminoCorto = valorCamino;
+                        caminoCompletoCorto = caminos[i];
                     } else {
                         if (valorCamino < valorCaminoCorto) {
                             verticeCaminoCorto = arregloVertices[i];
                             valorCaminoCorto = valorCamino;
+                            caminoCompletoCorto = caminos[i];
                         }
                     }
                 }
@@ -97,7 +99,8 @@ public class Dijkstra {
                             valoresCaminos[i] = neoCamino;
                             //Añadiendo el vertice de camino más corto a la pila del vértice en cuestión
                             //porque significa que tuvimos que pasar por ahí para llegar al vértice en cuestión.
-                            caminos[i].queue(verticeCaminoCorto);
+                            caminos[i] = ((SLQueue)caminoCompletoCorto).duplicate();
+                            //caminos[i].queue(verticeCaminoCorto);
                         }
                     }
                 }
@@ -114,16 +117,16 @@ public class Dijkstra {
                         //Nuevo vértice de camino más corto
                         nuevoCaminoAUsar = valoresCaminos[i];
                         verticeCaminoCorto = arregloVertices[i];
+                        if (!((SLQueue)caminos[i]).last().equals(arregloVertices[i])) {
+                            caminos[i].queue(arregloVertices[i]);
+                        }
+                        caminoCompletoCorto = caminos[i];
                     }
                 }
             }
             //Setea el nuevo valor de camino más corto
             valorCaminoCorto = nuevoCaminoAUsar;
-        }
-        
-        //Imprimiendo los valores de los caminos
-        for (int i = 0; i < valoresCaminos.length; i++) {
-            System.out.println(arregloVertices[i] + " = " + valoresCaminos[i]);
+            System.out.println(vertices.size());
         }
         
         //Retornando el arreglo de pilas
